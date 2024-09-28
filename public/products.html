@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Waterscooter Store</title>
+    <link rel="stylesheet" href="style.css"> <!-- Fix the CSS file reference to 'style.css' -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #014a74; /* Deep Sea Blue */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .cart-icon i {
+            font-size: 24px;
+            color: white;
+        }
+
+        .cart-icon span {
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            display: inline-block;
+            margin: 20px;
+            border-radius: 8px;
+            width: 300px; /* Fixed width for consistency */
+            height: 450px; /* Fixed height for consistency */
+            vertical-align: top;
+        }
+
+        .product img {
+            width: 100%; /* Full width */
+            height: 250px; /* Fixed height */
+            object-fit: contain; /* Ensure the image is contained within the box */
+            margin-bottom: 10px;
+        }
+
+        /* Style the Add to Cart button */
+        button {
+            background-color: #014a74; /* Blue by default */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #28a745; /* Green on hover */
+        }
+
+        footer {
+            background-color: #014a74;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Cart Modal Styling */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 40%;
+            z-index: 1000;
+        }
+
+        .cart-modal h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #1b4f72;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: auto;
+        }
+
+        #cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: right;
+        }
+
+        #close-cart-modal, #proceed-checkout {
+            background-color: #1b4f72;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #proceed-checkout {
+            background-color: #28a745;
+        }
+
+        #proceed-checkout:hover {
+            background-color: #218838;
+        }
+
+        #close-cart-modal:hover {
+            background-color: #154360;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Waterscooter Store</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="cart-icon" id="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="header-cart-count">0</span> <!-- Displays cart count -->
+        </div>
+    </header>
+
+    <section>
+        <h2>Our Products</h2>
+        <p>Explore the best waterscooters for your next adventure.</p>
+
+        <!-- Waterscooter X200 Product Listing -->
+        <div class="product">
+            <img src="images/waterscooter1.png" alt="Waterscooter X200">
+            <h3><a href="product-details.html">Waterscooter X200</a></h3>
+            <p>Price: $500.00</p>
+            <button id="add-to-cart-x200">Add to Cart</button>
+        </div>
+
+        <!-- Waterscooter X300 Product Listing -->
+        <div class="product">
+            <img src="images/orangewaterscooter1.png" alt="Waterscooter X300">
+            <h3><a href="product-details-x300.html">Waterscooter X300</a></h3>
+            <p>Price: $450.00</p>
+            <button id="add-to-cart-x300">Add to Cart</button>
+        </div>
+
+        <p>Items in cart: <span id="cart-count">0</span></p>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <h3>Your Cart</h3>
+        <div id="cart-items"></div>
+        <p id="cart-total">Total: $0.00</p>
+        <button id="proceed-checkout">Proceed to Checkout</button>
+        <button id="close-cart-modal">Close</button>
+    </div>
+
+    <footer>
+        <p>© 2024 Waterscooter Store. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
