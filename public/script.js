@@ -105,10 +105,18 @@ function addToCartX300() {
     alert('Waterscooter X300 has been added to your cart!');
 }
 
+// Handle "Add to Cart" button click for Goggles
+function addToCartGoggles() {
+    console.log('Adding Goggles to cart'); // Debug log
+    addToCart(3, 25.99, 'Goggles', 'images/goggles01-1.png'); // Adds Goggles with ID 3, price $25.99, and image URL
+    alert('Goggles have been added to your cart!');
+}
+
 // Safely attach event listeners
 document.addEventListener('DOMContentLoaded', () => {
     safelyAttachEventListener('#add-to-cart-x200', 'click', addToCartX200);
     safelyAttachEventListener('#add-to-cart-x300', 'click', addToCartX300);
+    safelyAttachEventListener('#add-to-cart-goggles', 'click', addToCartGoggles); // Ensure this works for the goggles product
 
     // Handle Cart icon click to show cart items before checkout
     safelyAttachEventListener('#cart-icon', 'click', () => {
@@ -132,33 +140,37 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount(); // Update the cart count display on load
 
     // Handle contact form submission
-    document.getElementById('contact-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
 
-        fetch('/send-message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, message }),
-        })
-        .then(response => {
-            if (response.ok) {
-                // Redirect to thankyou.html
-                window.location.href = '/thankyou.html';
-            } else {
-                alert('Error sending message. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error sending your message. Please try again.');
+            fetch('http://localhost:3000/send-message', { // Ensure this URL is correct
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, message }),
+            })        
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to thankyou.html
+                    window.location.href = '/thankyou.html';
+                } else {
+                    alert('Error sending message. Please try again.');
+                    return response.text().then(text => console.error('Server error:', text));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error sending your message. Please try again.');
+            });
         });
-    });
+    }
 });
 
 // Handle Proceed to Checkout button click
@@ -203,6 +215,7 @@ safelyAttachEventListener('#proceed-checkout', 'click', () => {
         alert('Your cart is empty.');
     }
 });
+
 // Close the cart modal
 safelyAttachEventListener('#close-cart-modal', 'click', () => {
     document.getElementById('cart-modal').style.display = 'none'; // Properly close the cart modal

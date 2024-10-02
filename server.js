@@ -7,7 +7,7 @@ const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const app = express();
 
 // Middleware to serve static files and handle form data
-app.use(express.static('public')); // Ensure 'public' is where your static files are stored
+app.use(express.static('public')); // Ensure 'public' is your static files directory
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -25,20 +25,20 @@ app.post('/send-message', (req, res) => {
   const { name, email, message } = req.body;
 
   const mailOptions = {
-    from: email, // Customer's email
-    to: process.env.EMAIL_USER, // Your receiving email
-    subject: `New message from ${name}`,
-    text: message,
+      from: email, 
+      to: process.env.EMAIL_USER,
+      subject: `New message from ${name}`,
+      text: message,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-      return res.status(500).send('Error sending message');
-    } else {
-      console.log('Message sent: %s', info.messageId);
-      res.redirect('/thank-you.html'); // Redirect to thank-you page on success
-    }
+      if (error) {
+          console.error('Error sending email:', error);
+          return res.status(500).send('Error sending message');
+      } else {
+          console.log('Message sent: %s', info.messageId);
+          res.redirect('/thankyou.html'); // Ensure this file exists and is being served
+      }
   });
 });
 
@@ -46,6 +46,7 @@ app.post('/send-message', (req, res) => {
 const storeItems = new Map([
   [1, { priceInCents: 50000, name: 'Waterscooter X200' }],
   [2, { priceInCents: 45000, name: 'Waterscooter X300' }],
+  [3, { priceInCents: 2599, name: 'Goggles' }], // NEW ADDITION for Goggles
 ]);
 
 app.post('/create-checkout-session', async (req, res) => {
